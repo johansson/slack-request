@@ -34,12 +34,15 @@
     <Compile Include="config.js" />
     <Compile Include="routes\index.js" />
     <Compile Include="bin\www" />
-    <Compile Include="routes\users.js" />
+    <Compile Include="routes\success.js" />
+    <Compile Include="routes\signup.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="views\index.jade" />
     <Content Include="views\layout.jade" />
     <Content Include="views\error.jade" />
+    <Content Include="views\success.jade" />
+    <Content Include="views\signup.jade" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\" />
