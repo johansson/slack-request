@@ -1,0 +1,7 @@
+# grr, Windows
+* text eol=lf
+*.njsproj text eol=crlf
+*.png binary
+*.gif binary
+*.jpg binary
+*.jpeg binary

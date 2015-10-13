@@ -1,0 +1,16 @@
+# npm stuff
+node_modules/
+
+# dnx
+project.lock.json
+artifacts/
+
+# vs
+.ntvs_analysis.dat
+.ntvs_analysis.dat.*
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.[Cc]ache/
+[Oo]bj/
