@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  h1 #{slack_name} #{title}
+
+  form(name="admin", action="admin", method="post")
+    each signup, index in signups
+      div.input
+        input(type="checkbox", name="checked", checked=false, value=signup._id)
+        span.label= signup.firstName
+        span.label= signup.lastName
+        span.label= signup.email
+        span.label= signup.handle
+        span.label= signup.description
+        span.label= signup.date
+    div.actions
+      input(type="submit", name="action", value="Approve")
+      input(type="submit", name="action", value="Reject")

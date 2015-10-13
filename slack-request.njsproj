@@ -32,12 +32,14 @@
   <ItemGroup>
     <Compile Include="app.js" />
     <Compile Include="config.js" />
+    <Compile Include="routes\admin.js" />
     <Compile Include="routes\index.js" />
     <Compile Include="bin\www" />
     <Compile Include="routes\success.js" />
     <Compile Include="routes\signup.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+    <Content Include="views\admin.jade" />
     <Content Include="views\index.jade" />
     <Content Include="views\layout.jade" />
     <Content Include="views\error.jade" />
