@@ -24,7 +24,7 @@ router.post('/', function (req, res) {
     
     console.log(req);
     
-    if (req.body.action == 'Approve') {
+    if (req.body.action === 'Approve') {
         signups.find({ _id: { $in: checked } }, {}, function (err, docs) {
             if (err) {
                 res.status(500).send('something went wrong, try again'.concat(err));
@@ -65,7 +65,7 @@ router.post('/', function (req, res) {
                 }
             }
         });
-    } else if (req.body.action == 'Reject') {
+    } else if (req.body.action === 'Reject') {
         var result = signups.remove({ _id: { $in: checked } });
         
         if (!result.writeConcernError) {
