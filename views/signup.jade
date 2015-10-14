@@ -31,7 +31,7 @@ block content
         textarea(name="description", cols="40", rows="15", placeholder="Tell us about yourself.")
       - if (errors['description'])
           span.error= errors['description']['msg']
-      dev.input
+      div.input
         label(for="conditional")
           input#conditional(type="checkbox", name="conditional", checked=false)
           |  #{conditional}
