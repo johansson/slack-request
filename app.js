@@ -1,6 +1,7 @@
 var config = require('./config.js')
 
 var express = require('express');
+var auth = require('basic-auth');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -40,6 +41,17 @@ app.use(function (req, res, next) {
 app.use('/', index);
 app.use('/signup', signup);
 app.use('/success', success);
+
+app.use(function (req, res, next) {
+    var user = auth(req);
+
+    if (!user || !config.admins[user.name] || config.admins[user.name].password !== user.pass) {
+        res.set('WWW-Authenticate', 'Basic realm="slack-invite"');
+        return res.status(401).send('Wrong username or password.');
+    }
+    return next();
+});
+
 app.use('/admin', admin);
 
 // catch 404 and forward to error handler
