@@ -42,17 +42,16 @@ app.use('/', index);
 app.use('/signup', signup);
 app.use('/success', success);
 
-app.use(function (req, res, next) {
+app.use('/admin', function (req, res, next) {
     var user = auth(req);
 
     if (!user || !config.admins[user.name] || config.admins[user.name].password !== user.pass) {
         res.set('WWW-Authenticate', 'Basic realm="slack-invite"');
         return res.status(401).send('Wrong username or password.');
     }
-    return next();
-});
 
-app.use('/admin', admin);
+    return next();
+}, admin);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
