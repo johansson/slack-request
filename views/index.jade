@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{slack_name}
-  p Sound awesome?
-  a(href="/signup") Sign up now!
+  h1.title= title
+  p#welcome Welcome to #{slack_name}
+  p#question Sound awesome?
+  p #[a#signupLink(href="/signup") Sign up now!]

@@ -6,3 +6,11 @@ body {
 a {
   color: #00B7FF;
 }
+
+.label {
+    font-weight: bold;
+}
+
+.errors {
+    color: red;
+}

@@ -4,42 +4,44 @@ block content
   h1= title
   p= signup_description
 
-  form(name="sign-up", action="signup", method="post")
-    div.input
-      span.label First Name
-      input(type="text", name="firstName")
-    - if (errors['firstName'])
-        span.label= errors['firstName']['msg']
-    div.input
-      span.label Last Name
-      input(type="text", name="lastName")
-    - if (errors['lastName'])
-        span.label= errors['lastName']['msg']
-    div.input
-      span.label E-mail
-      input(type="text", name="email")
-    - if (errors['email'])
-        span.label= errors['email']['msg']
-    div.input
-      span.label User handle
-      input(type="text", name="handle")
-    - if (errors['handle'])
-        span.label= errors['handle']['msg']
-    div.input
-      span.label About yourself:
-      textarea(name="description", cols="40", rows="15")
-    - if (errors['description'])
-        span.label= errors['description']['msg']
-    dev.input
-      input(type="checkbox", name="conditional", checked=false)
-      span.label= conditional
-    - if (errors['conditional'])
-        span.label= errors['conditional']['msg']
-    div.input
-      input(type="checkbox", name="codeOfConduct", checked=false)
-      span.label I have read and will adhere to the
-      a(href=code_of_conduct) Code of Conduct
-    - if (errors['codeOfConduct'])
-        span.label= errors['codeOfConduct']['msg']
+  form.pure-form.pure-form-stacked(name="sign-up", action="signup", method="post")
+    fieldset
+      div.input
+        label(for="firstName") First Name
+        input#firstName(type="text", name="firstName", placeholder="Your first name")
+      - if (errors['firstName'])
+          span.error= errors['firstName']['msg']
+      div.input
+        label(for="lastName") Last Name
+        input#lastName(type="text", name="lastName", placeholder="Your last name")
+      - if (errors['lastName'])
+          span.error= errors['lastName']['msg']
+      div.input
+        label(for="email") E-mail
+        input(type="text", name="email", placeholder="you@example.com")
+      - if (errors['email'])
+          span.error= errors['email']['msg']
+      div.input
+        label(for="handle") User handle
+        input(type="text", name="handle", placeholder="Your handle")
+      - if (errors['handle'])
+          span.error= errors['handle']['msg']
+      div.input
+        label(for="description") About yourself
+        textarea(name="description", cols="40", rows="15", placeholder="Tell us about yourself.")
+      - if (errors['description'])
+          span.error= errors['description']['msg']
+      dev.input
+        label(for="conditional")
+          input#conditional(type="checkbox", name="conditional", checked=false)
+          |  #{conditional}
+      - if (errors['conditional'])
+          span.error= errors['conditional']['msg']
+      div.input
+        label(for="codeOfConduct")
+          input#codeOfConduct(type="checkbox", name="codeOfConduct", checked=false)
+          |  I have read and will adhere to the #[a(href=code_of_conduct) Code of Conduct]
+      - if (errors['codeOfConduct'])
+          span.error= errors['codeOfConduct']['msg']
     div.actions
       input(type="submit", value="Sign up!")

@@ -17,63 +17,82 @@ router.get('/', function (req, res, next) {
     });
 });
 
+function process(data) {
+    var defers = [];
+    var approves = [];
+    var rejects = [];
+
+    for (var key in data) {
+        if (data[key] === 'defer') {
+            defers.push(key);
+        } else if (data[key] === 'approve') {
+            approves.push(key);
+        } else if (data[key] === 'reject') {
+            rejects.push(key);
+        }
+    }
+
+    return { defers: defers, approves: approves, rejects: rejects}
+}
+
+function check(result) {
+    if (result.writeConcernError) {
+        throw result.writeConcernError.errmsg;
+    }
+}
+
 router.post('/', function (req, res) {
     var db = req.db;
     var signups = db.get('signups');
-    var checked = (Array.isArray(req.body.checked) ? req.body.checked : [req.body.checked]).map(mongo.ObjectID);
     
-    console.log(req);
+    var processed = process(req.body);
     
-    if (req.body.action === 'Approve') {
-        signups.find({ _id: { $in: checked } }, {}, function (err, docs) {
-            if (err) {
-                res.status(500).send('something went wrong, try again'.concat(err));
-            } else {
-                docs.forEach(function (element, index, array) {
-                    console.log("approved " + element['email']);
-                    /* TODO: error handling and delete only succeeded
-                    request.post({
-                        url: 'https://' + config.slack_url + '/api/users.admin.invite',
-                        form: { email: element['email'], token: config.slack_token, set_active: true }
-                    }, function (api_err, http_res, body) {
-                        if (err) {
-                            // TODO: accumulate
-                        } else {
-                            body = JSON.parse(body);
+    var defers = processed.defers.map(mongo.ObjectID);
+    var approves = processed.approves.map(mongo.ObjectID);
+    var rejects = processed.rejects.map(mongo.ObjectID);
+    
+    var removed_rejects = signups.remove({ _id: { $in: rejects } });
 
-                            if (body.ok) {
-                                // TODO: accumualte
-                            } else {
-                                if (body.error == 'already_invited') {
-                                    // TODO: accumulate
-                                } else if (body.error == 'invalid_email') {
-                                    // TODO: accumulate
-                                }
+    signups.find({ _id: { $in: approves } }, {}, function (err, docs) {
+        if (err) {
+            res.status(500).send('something went wrong, try again'.concat(err));
+        } else {
+            docs.forEach(function (element, index, array) {
+                console.log("approved " + element['email']);
+                var errors = []
+                var succeeded = []
+                /* TODO: error handling and delete only succeeded */
+                require('request').post({
+                    url: 'https://' + config.slack_url + '/api/users.admin.invite',
+                    form: { email: element['email'], first_name: element['firstName'], last_name: element['lastName'], token: config.slack_token, set_active: true }
+                }, function (api_err, http_res, body) {
+                    if (err) {
+                        errors.push(err);
+                    } else {
+                        body = JSON.parse(body);
+
+                        if (body.ok) {
+                            succeeded.push(element['email']);
+                        } else {
+                            if (body.error == 'already_invited') {
+                                errors.push(element['email'] + ' already invited');
+                            } else if (body.error == 'invalid_email') {
+                                errors.push(element['email'] + ' is an invalid email');
                             }
                         }
-                    }); */
+                    }
                 });
+            });
                 
-                // TODO: it won't necessarily be all checked. and if this fails,
-                // have a better error to figure out which users were not removed
-                var result = signups.remove({ _id: { $in: checked } });
-                
-                if (!result.writeConcernError) {
-                    res.redirect(303, '/admin');
-                } else {
-                    res.status(500).send(result.writeConcernError.errmsg);
-                }
-            }
-        });
-    } else if (req.body.action === 'Reject') {
-        var result = signups.remove({ _id: { $in: checked } });
-        
-        if (!result.writeConcernError) {
-            res.redirect(303, '/admin');
-        } else {
-            res.status(500).send(result.writeConcernError.errmsg);
+            // TODO: it won't necessarily be all checked. and if this fails,
+            // have a better error to figure out which users were not removed
+            var removed_approves = signups.remove({ _id: { $in: approves } });
+            check(removed_rejects);
+            check(removed_approves);
         }
-    }
+    });
+
+    res.redirect(303, '/admin');
 });
 
 module.exports = router;

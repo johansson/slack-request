@@ -1,18 +1,21 @@
 extends layout
 
 block content
-  h1 #{slack_name} #{title}
+  h1.title #{slack_name} #{title}
 
   form(name="admin", action="admin", method="post")
     each signup, index in signups
-      div.input
-        input(type="checkbox", name="checked", checked=false, value=signup._id)
-        span.label= signup.firstName
-        span.label= signup.lastName
-        span.label= signup.email
-        span.label= signup.handle
-        span.label= signup.description
-        span.label= signup.date
+      fieldset
+        legend Request #{index}
+        p #[span.label First Name:] #{signup.firstName}
+        p #[span.label Last Name:] #{signup.lastName}
+        p #[span.label E-mail:] #{signup.email}
+        p #[span.label Handle:] #{signup.handle}
+        p #[span.label Description:] #{signup.description}
+        p #[span.label Request date:] #{signup.date}
+        p.
+          #[input(type="radio", name=signup._id, checked=false, value="approve")] Approve
+          #[input(type="radio", name=signup._id, checked=false, value="reject")] Reject
+          #[input(type="radio", name=signup._id, checked=true, value="defer")] Defer
     div.actions
-      input(type="submit", name="action", value="Approve")
-      input(type="submit", name="action", value="Reject")
+      input(type="submit", value="Process")
