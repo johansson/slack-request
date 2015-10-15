@@ -3,19 +3,20 @@ extends layout
 block content
   h1.title #{slack_name} #{title}
 
-  form(name="admin", action="admin", method="post")
-    each signup, index in signups
-      fieldset
-        legend Request #{index}
-        p #[span.label First Name:] #{signup.firstName}
-        p #[span.label Last Name:] #{signup.lastName}
-        p #[span.label E-mail:] #{signup.email}
-        p #[span.label Handle:] #{signup.handle}
-        p #[span.label Description:] #{signup.description}
-        p #[span.label Request date:] #{signup.date}
-        p.
-          #[input(type="radio", name=signup._id, checked=false, value="approve")] Approve
-          #[input(type="radio", name=signup._id, checked=false, value="reject")] Reject
-          #[input(type="radio", name=signup._id, checked=true, value="defer")] Defer
-    div.actions
-      input(type="submit", value="Process")
+  div.form
+    form(name="admin", action="admin", method="post")
+      each signup, index in signups
+        fieldset
+          legend Request #{index}
+          p #[span.label First Name:] #{signup.firstName}
+          p #[span.label Last Name:] #{signup.lastName}
+          p #[span.label E-mail:] #{signup.email}
+          p #[span.label Handle:] #{signup.handle}
+          p #[span.label Description:] #{signup.description}
+          p #[span.label Request date:] #{signup.date}
+          p.
+            #[input(type="radio", name=signup._id, checked=false, value="approve")] Approve
+            #[input(type="radio", name=signup._id, checked=false, value="reject")] Reject
+            #[input(type="radio", name=signup._id, checked=true, value="defer")] Defer
+      div.actions
+        input(type="submit", value="Process")

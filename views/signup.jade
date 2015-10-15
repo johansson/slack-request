@@ -1,8 +1,8 @@
 extends layout
 
 block content
-  h1= title
-  p= signup_description
+  h1.title= title
+  p#welcome= signup_description
 
   form.form-vertical(name="sign-up", action="signup", method="post")
     fieldset
@@ -44,4 +44,4 @@ block content
       - if (errors['codeOfConduct'])
           span.error= errors['codeOfConduct']['msg']
     div.actions
-      input(type="submit", value="Sign up!")
+      input.btn.btn-lg.btn-success(type="submit", value="Sign up!")

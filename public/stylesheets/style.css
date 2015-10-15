@@ -1,6 +1,14 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    padding: 50px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    text-align: center;
+    color: white;
+}
+
+.content {
+  background-image:url('/images/background.jpg');
+  background-repeat:repeat-y;
+  background-size:cover;
 }
 
 a {
@@ -9,6 +17,32 @@ a {
 
 .label {
     font-weight: bold;
+}
+
+.input {
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px #000000;
+}
+
+.form {
+    background: white;
+}
+
+.title {
+    color: white;
+}
+
+#welcome {
+    color: white;
+    font-size: 20px;
+    padding: 15px 15px 15px 15px;
+}
+
+#question {
+    color: white;
+    font-size: 24px;
+    padding: 15px 15px 15px 15px;
 }
 
 .error {
