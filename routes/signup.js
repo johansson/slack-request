@@ -13,7 +13,7 @@ function to_error_dict(obj) {
 }
 
 router.get('/', function (req, res) {
-  res.render('signup', { errors: {}, title: 'Sign up for '.concat(config.slack_name), signup_description:config.signup_description, conditional:config.conditional, code_of_conduct:config.code_of_conduct });
+  res.render('signup', { errors: {}, fields: {}, title: 'Sign up for '.concat(config.slack_name), signup_description:config.signup_description, conditional:config.conditional, code_of_conduct:config.code_of_conduct });
 });
 
 router.post('/', function (req, res) {
@@ -57,7 +57,7 @@ router.post('/', function (req, res) {
         });
     } else {
         /* TODO: Render the signup page, but with the values pre-filled so the person can press sign up again. */
-        res.render('signup', { errors: to_error_dict(errors), title: 'Sign up for '.concat(config.slack_name), signup_description: config.signup_description, conditional: config.conditional, code_of_conduct: config.code_of_conduct });
+        res.render('signup', { fields: { "firstName": firstName, "lastName": lastName, "email": email, "handle": handle, "description": description, "conditional": conditional, "codeOfConduct": codeOfConduct }, errors: to_error_dict(errors), title: 'Sign up for '.concat(config.slack_name), signup_description: config.signup_description, conditional: config.conditional, code_of_conduct: config.code_of_conduct });
     }
 });
 
