@@ -37,6 +37,7 @@
     <Compile Include="bin\www" />
     <Compile Include="routes\success.js" />
     <Compile Include="routes\signup.js" />
+    <Compile Include="routes\whatisslack.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="views\admin.jade" />
@@ -45,6 +46,7 @@
     <Content Include="views\error.jade" />
     <Content Include="views\success.jade" />
     <Content Include="views\signup.jade" />
+    <Content Include="views\whatisslack.jade" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\" />
