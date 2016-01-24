@@ -43,5 +43,8 @@ block content
           |  I have read and will adhere to the #[a(href=code_of_conduct) Code of Conduct]
       - if (errors['codeOfConduct'])
           span.error= errors['codeOfConduct']['msg']
+      div.g-recaptcha(data-sitekey=recaptcha_sitekey)
+    - if (errors['g-recaptcha-response'])
+      span.error= errors['g-recaptcha-response']['msg']
     div.actions
       input.btn.btn-lg.btn-success(type="submit", value="Sign up!")

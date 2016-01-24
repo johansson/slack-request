@@ -7,5 +7,7 @@ module.exports = {
     conditional: process.env.CONDITIONAL || 'Do you identify with this group?',
     conditional_error: process.env.CONDITIONAL_ERROR || 'You must identify with this group!',
     code_of_conduct: process.env.CODE_OF_CONDUCT || 'http://awesome-team.com/codeofconduct',
+    recaptcha_secret: process.env.RECAPTCHA_SECRET || 'awesome-team-recaptcha-secret',
+    recaptcha_sitekey: process.env.RECAPTCHA_SITEKEY || 'awesome-team-recaptcha-sitekey',
     admins: { 'foo@bar.com': { password: 'p@$$w0rd!' } }
 };

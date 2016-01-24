@@ -10,6 +10,8 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
     script(src='/javascripts/jquery.js')
     script(src='/bootstrap/js/bootstrap.min.js')
+    - if (activePage === "signup")
+        script(src='https://www.google.com/recaptcha/api.js')
   body
     div.site-wrapper
       div.site-wrapper-inner

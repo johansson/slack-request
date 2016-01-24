@@ -114,3 +114,8 @@ a, a:hover {
     width: 95%;
   }
 }
+
+.g-recaptcha {
+  margin: 0 auto;
+  width: 304px;
+}

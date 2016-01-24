@@ -13,7 +13,7 @@ function to_error_dict(obj) {
 }
 
 router.get('/', function (req, res) {
-  res.render('signup', { activePage: 'signup', errors: {}, title: 'Sign up for '.concat(config.slack_name), signup_description:config.signup_description, conditional:config.conditional, code_of_conduct:config.code_of_conduct, slack_name: config.slack_name });
+  res.render('signup', { activePage: 'signup', errors: {}, title: 'Sign up for '.concat(config.slack_name), signup_description:config.signup_description, conditional:config.conditional, code_of_conduct:config.code_of_conduct, slack_name: config.slack_name, recaptcha_sitekey: config.recaptcha_sitekey });
 });
 
 router.post('/', function (req, res) {
@@ -24,6 +24,7 @@ router.post('/', function (req, res) {
     req.checkBody('description', 'Please describe yourself').notEmpty();
     req.checkBody('conditional', config.conditional_error).notEmpty();
     req.checkBody('codeOfConduct', 'You must agree to the Code of Conduct').notEmpty();
+    req.checkBody('g-recaptcha-response', 'You must pass reCAPTCHA').notEmpty();
 
     /* in case we call next() in the future */
     req.body.firstName = xssFilters.inHTMLData(req.sanitizeBody('firstName').toString().trim());
@@ -33,6 +34,7 @@ router.post('/', function (req, res) {
     req.body.description = xssFilters.inHTMLData(req.sanitizeBody('description').toString());
     req.body.conditional = req.sanitizeBody('conditional').toBoolean();
     req.body.codeOfConduct = req.sanitizeBody('codeOfConduct').toBoolean();
+    var recaptcha = xssFilters.inHTMLData(req.sanitizeBody('g-recaptcha-response').toString());
 
     var errors = req.validationErrors();
 
@@ -43,6 +45,16 @@ router.post('/', function (req, res) {
     var description = req.body.description;
     var conditional = req.body.conditional;
     var codeOfConduct = req.body.codeOfConduct;
+
+    require('request').post({
+        url: 'https://www.google.com/recaptcha/api/siteverify',
+        form: { secret: config.recaptcha_secret, response: recaptcha }}, function (r_err, r_res, r_body) {
+            r_body = JSON.parse(r_body);
+
+            if (!r_body.success) {
+              errors['g-recaptcha-response'] = { msg: 'You must pass reCAPTCHA' };
+            }
+        });
 
     if (!errors) {
         var db = req.db;
@@ -57,7 +69,7 @@ router.post('/', function (req, res) {
         });
     } else {
         /* TODO: Render the signup page, but with the values pre-filled so the person can press sign up again. */
-        res.render('signup', { activePage: 'signup', errors: to_error_dict(errors), title: 'Sign up for '.concat(config.slack_name), signup_description: config.signup_description, conditional: config.conditional, code_of_conduct: config.code_of_conduct, slack_name: config.slack_name });
+        res.render('signup', { activePage: 'signup', errors: to_error_dict(errors), title: 'Sign up for '.concat(config.slack_name), signup_description: config.signup_description, conditional: config.conditional, code_of_conduct: config.code_of_conduct, slack_name: config.slack_name, recaptcha_sitekey: config.recaptcha_sitekey });
     }
 });
 
