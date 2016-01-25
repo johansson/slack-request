@@ -13,7 +13,7 @@ function to_error_dict(obj) {
 }
 
 router.get('/', function (req, res) {
-  res.render('signup', { errors: {}, title: 'Sign up for '.concat(config.slack_name), signup_description:config.signup_description, conditional:config.conditional, code_of_conduct:config.code_of_conduct });
+  res.render('signup', { activePage: 'signup', errors: {}, title: 'Sign up for '.concat(config.slack_name), signup_description:config.signup_description, conditional:config.conditional, code_of_conduct:config.code_of_conduct, slack_name: config.slack_name });
 });
 
 router.post('/', function (req, res) {
@@ -24,7 +24,7 @@ router.post('/', function (req, res) {
     req.checkBody('description', 'Please describe yourself').notEmpty();
     req.checkBody('conditional', config.conditional_error).notEmpty();
     req.checkBody('codeOfConduct', 'You must agree to the Code of Conduct').notEmpty();
-    
+
     /* in case we call next() in the future */
     req.body.firstName = xssFilters.inHTMLData(req.sanitizeBody('firstName').toString().trim());
     req.body.lastName = xssFilters.inHTMLData(req.sanitizeBody('lastName').toString().trim());
@@ -33,9 +33,9 @@ router.post('/', function (req, res) {
     req.body.description = xssFilters.inHTMLData(req.sanitizeBody('description').toString());
     req.body.conditional = req.sanitizeBody('conditional').toBoolean();
     req.body.codeOfConduct = req.sanitizeBody('codeOfConduct').toBoolean();
-    
+
     var errors = req.validationErrors();
-    
+
     var firstName = req.body.firstName;
     var lastName = req.body.lastName;
     var email = req.body.email;
@@ -43,7 +43,7 @@ router.post('/', function (req, res) {
     var description = req.body.description;
     var conditional = req.body.conditional;
     var codeOfConduct = req.body.codeOfConduct;
-    
+
     if (!errors) {
         var db = req.db;
         var signups = db.get('signups');
@@ -57,7 +57,7 @@ router.post('/', function (req, res) {
         });
     } else {
         /* TODO: Render the signup page, but with the values pre-filled so the person can press sign up again. */
-        res.render('signup', { errors: to_error_dict(errors), title: 'Sign up for '.concat(config.slack_name), signup_description: config.signup_description, conditional: config.conditional, code_of_conduct: config.code_of_conduct });
+        res.render('signup', { activePage: 'signup', errors: to_error_dict(errors), title: 'Sign up for '.concat(config.slack_name), signup_description: config.signup_description, conditional: config.conditional, code_of_conduct: config.code_of_conduct, slack_name: config.slack_name });
     }
 });
 

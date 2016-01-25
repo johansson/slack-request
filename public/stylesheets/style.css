@@ -1,50 +1,116 @@
+html, body {
+  height: 100%;
+  background-color: #000;
+}
+
 body {
-    padding: 50px;
-    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-    text-align: center;
-    color: white;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 1px 3px rgba(0,0,0,.5);
 }
 
-.content {
-  background-image:url('/images/background.jpg');
-  background-repeat:repeat-y;
-  background-size:cover;
+a, a:hover {
+  color: #FFF;
 }
 
-a {
-  color: #00B7FF;
+.site-wrapper {
+  background: url("/images/background.jpg") no-repeat;
+  background-size: cover;
+  display: table;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  -webkit-box-shadow: inset 0 0 100px rgba(0,0,0,.5);
+          box-shadow: inset 0 0 100px rgba(0,0,0,.5);
 }
 
-.label {
-    font-weight: bold;
+.site-header-nav > li > a {
+  font-size: 1.5em;
+  font-weight: bold;
+  border-bottom: 2px solid transparent;
 }
 
-.input {
-    font-weight: bold;
-    color: white;
-    text-shadow: 1px 1px #000000;
+.site-header-nav > li {
+  display: inline-block;
+  padding-top: .25em;
+  padding-bottom: .25em;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-left: 0px;
+  margin-right: 0px;
 }
 
-.form {
-    background: white;
+.site-header-nav > li > a:hover {
+  background-color: inherit;
+  border-bottom-color: rgba(255,255,255,.5);
 }
 
-.title {
-    color: white;
+.site-header-nav > .active > a {
+  border-bottom-color: #FFF;
 }
 
-#welcome {
-    color: white;
-    font-size: 20px;
-    padding: 15px 15px 15px 15px;
+.btn-lg {
+  font-size: 2em;
+  padding: 1em;
 }
 
-#question {
-    color: white;
-    font-size: 24px;
-    padding: 15px 15px 15px 15px;
+#welcome, #question {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  line-height: 125%;
 }
 
-.error {
-    color: red;
+@media (min-width: 768px) {
+  .site-wrapper-inner {
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  .inner {
+    padding: 30px;
+  }
+
+  #welcome, #question {
+    font-size: 1.25em;
+  }
+
+  label {
+    font-size: 1.25em;
+  }
+}
+
+@media (max-width: 767px) {
+  .site-wrapper-inner {
+    vertical-align: top;
+  }
+
+  .site-header {
+    background-color: #333;
+    opacity: .75;
+  }
+
+  h1.title {
+    font-size: 1.5em;
+  }
+
+  #welcome, #question {
+    font-size: 1.5em;
+  }
+
+  body {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  .inner {
+    padding: 10px;
+  }
+
+  label {
+    font-size: 1.5em;
+  }
+
+  input, textarea {
+    width: 95%;
+  }
 }
