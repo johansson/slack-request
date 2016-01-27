@@ -4,7 +4,7 @@ var config = require('../config');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { activePage: 'home', title: 'Sign up for '.concat(config.slack_name), slack_name: config.slack_name });
+  res.render('index', { question:config.question, activePage: 'home', title: 'Sign up for '.concat(config.slack_name), slack_name: config.slack_name });
 });
 
 module.exports = router;
