@@ -13,6 +13,18 @@ a, a:hover {
   color: #FFF;
 }
 
+a.codeOfConduct {
+  text-decoration: underline;
+}
+
+a:hover.codeOfConduct {
+  text-decoration: none;
+}
+
+.error {
+  color: red;
+}
+
 .site-wrapper {
   background: url("/images/background.jpg") no-repeat;
   background-size: cover;
@@ -52,6 +64,7 @@ a, a:hover {
 .btn-lg {
   font-size: 2em;
   padding: 1em;
+  margin: 2em;
 }
 
 #welcome, #question {
@@ -76,6 +89,11 @@ a, a:hover {
 
   label {
     font-size: 1.25em;
+  }
+
+  .input {
+    margin-top: 14px;
+    margin-bottom: 14px;
   }
 }
 
@@ -112,6 +130,11 @@ a, a:hover {
 
   input, textarea {
     width: 95%;
+  }
+
+  .input {
+    margin-top: 7px;
+    margin-bottom: 7px;
   }
 }
 
