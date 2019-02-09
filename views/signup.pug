@@ -1,31 +1,21 @@
 extends layout
 
 block content
-  h1.title= title
+  h1= title
   p#welcome= signup_description
 
   form.form-vertical(name="sign-up", action="signup", method="post")
     fieldset
       div.input
-        label(for="firstName") First Name
-          - if (errors['firstName'])
-            span.error= errors['firstName']['msg']
-        input#firstName(type="text", name="firstName", placeholder="Your first name", value=(Object.keys(errors).length > 0 ? info["firstName"] : ""))
-      div.input
-        label(for="lastName") Last Name
-          - if (errors['lastName'])
-              span.error= errors['lastName']['msg']
-        input#lastName(type="text", name="lastName", placeholder="Your last name", value=(Object.keys(errors).length > 0 ? info["lastName"] : ""))
+        label(for="name") Name
+          - if (errors['name'])
+            span.error= errors['name']['msg']
+        input#name(type="text", name="name", placeholder="Your name", value=(Object.keys(errors).length > 0 ? info["name"] : ""))
       div.input
         label(for="email") E-mail
           - if (errors['email'])
               span.error= errors['email']['msg']
         input(type="text", name="email", placeholder="you@example.com", value=(Object.keys(errors).length > 0 ? (errors['email'] ? errors['email']['value'] : info["email"]) : ""))
-      div.input
-        label(for="handle") User handle
-          - if (errors['handle'])
-              span.error= errors['handle']['msg']
-        input(type="text", name="handle", placeholder="Your handle", value=(Object.keys(errors).length > 0 ? info["handle"] : ""))
       div.input
         label(for="desc") About yourself
           - if (errors['desc'])

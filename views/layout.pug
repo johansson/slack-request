@@ -1,0 +1,30 @@
+doctype html
+html(lang= lang)
+  head
+    meta(charset="utf-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(property="og:title", content= title)
+    meta(property="og:type", content="website")
+    meta(property="og:url", content= `${base_uri}${path}`)
+    meta(property="og:description", content= description_metadata)
+    link(rel="stylesheet", href="css/foundation.css")
+    link(rel="stylesheet", href="css/app.css")
+    block scripts
+    title= title
+  body
+    nav(class="top-bar navigation" data-topbar role="navigation")
+      ul(class="menu")
+        li(class="menu-text")
+          h1 #[strong #[a(href="/")= name]]
+      section(class="top-bar-section")
+        ul(class="menu right")
+          li(class=(page == 'index' ? "is-active": false)) #[a(href="/") Home]
+          li(class=(page == 'code-of-conduct' ? "is-active": false)) #[a(href= code_of_conduct_url) Code of Conduct]
+    div(class="grid-container")
+      block content
+    div(class="bottom-bar")
+      footer(class="row")
+        div(class="columns")
+          | This website is governed by the #[a(href="https://creativecommons.org/publicdomain/zero/1.0/") Creative Commons Zero license]; it’s public domain! Any and all use of this site’s content is allowed.
+          | This website is protected by reCAPTCHA and the Google #[a(href="https://policies.google.com/privacy") Privacy Policy] and #[a(href="https://policies.google.com/terms") Terms of Service].

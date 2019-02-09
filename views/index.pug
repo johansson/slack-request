@@ -1,0 +1,69 @@
+extends layout
+
+block scripts
+  script(src="/js/jquery.min.js", nonce= nonce)
+  script(src="/js/foundation.min.js", nonce= nonce)
+  script(src="/js/app.js", nonce= nonce)
+  script(src=`/js/recaptcha.js?sitekey=${recaptcha_sitekey}`, nonce= nonce)
+  script(src=`https://www.google.com/recaptcha/api.js?render=${recaptcha_sitekey}&onload=loadRecaptcha`, nonce= nonce)
+
+block content
+  div(class="callout secondary")
+    p!= description
+  if typeof(error) !== "undefined"
+    div(class="callout alert-callout-border alert")
+      p= error.message
+      if process.env.NODE_ENV !== "production" && error.error
+        p= error.error
+  div(class="grid-x grid-padding-x")
+    div(class="medium-4 cell")
+      h3 #[strong Who&rsquo;s invited&quest;]
+      p!= whos_invited.body
+    div(class="medium-4 cell")
+      h3 #[strong What are the rules&quest;]
+      p We have a simple and uncontroversial #[a(href= code_of_conduct_url) Code&nbsp;of&nbsp;Conduct].
+    div(class="medium-4 cell")
+      h3 #[strong How do I join&quest;]
+      p Fill out the form below. A moderator will send you an invitation.
+    div(class="large-12 cell")
+      form(action="/", method="POST", data-abide)
+        input(type="hidden", name="g-recaptcha-response", id="recaptchaResponse")
+        div(class="callout")
+          div(class="grid-x grid-padding-x")
+              div(class="medium-6 cell")
+                label #[span Name: #[input(name="name", placeholder="Jane Doe", required="", type="text", class="input-field", value= context.name)]]
+              div(class="medium-6 cell")
+                label #[span E-mail: #[input(name="email", placeholder="jane.doe@example.com", required="", type="email", class="input-field", value= context.email)]]
+              div(class="medium-6 cell")
+                label
+                  span Education:
+                    select(name="education", required="", class="input-field", value= context.education)
+                      option(value="none") None
+                      option(value="secondary") High school/GED/Secondary
+                      option(value="trade") Trade
+                      option(value="as") Associate
+                      option(value="bs") Bachelor's
+                      option(value="ms") Master's
+                      option(value="phd") Doctoral
+                      option(value="pro") Professional (law, medical, etc.)
+              div(class="medium-6 cell")
+                label #[span Work Experience: #[input(name="work", placeholder="How long have you worked or have you just graduated?", required="", type="text", class="input-field", value= context.work)]]
+              div(class="large-12 cell")
+                label #[span About You: #[textarea(name="about", rows="5", placeholder="Tell us about yourself! What is your professional field? What is your background with being deaf or hard of hearing? And whatever you want us to know!", required="", type="text", class="input-field")= context.about]]
+              each requirement in Object.keys(requirements)
+                div(class="medium-6 cell" align="center")
+                  label
+                    input(type="checkbox", name= requirement, required="", class="input-field", checked= context.has_fulfilled_requirements)
+                    | !{requirements[requirement].text}
+              div(class="large-12 cell")
+                button(class="button large expanded", type="submit") Sign Up
+    div(class="medium-6 cell")
+      h3 #[strong Channels]
+      p Slack chat spaces are divided into rooms called &ldquo;channels&rdquo;, and we have a few. There are #[span= number_of_channels] you&rsquo;ll be in by default:
+      ul(class="no-bullet")
+        each channel in default_channels
+          li #[span(class="label radius")= channel.name] #[span= channel.description]
+      p All rooms are opt-in except #[span(class="label radius")= non_optout_channel.name].
+    div(class="medium-6 cell")
+      h3 #[strong I want to bring a friend&excl;]
+      p Please do! Ask your friend to read the #[a(href= code_of_conduct_url) Code of Conduct] and fill out the form.

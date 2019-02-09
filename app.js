@@ -1,88 +1,91 @@
-var config = require('./config.js')
+var createError = require("http-errors");
+var express = require("express");
+var path = require("path");
+var logger = require("morgan");
+var csp = require("express-csp");
+const debug = require("debug")("slack-request:app");
 
-var express = require('express');
-var auth = require('basic-auth');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var validator = require('express-validator');
-var db = require('monk')(config.mongo_db);
+var config = require("./config");
 
-var index = require('./routes/index');
-var signup = require('./routes/signup');
-var success = require('./routes/success');
-var admin = require('./routes/admin');
+const indexRoute = require("./routes/index");
+const recaptchaRoute = require("./routes/recaptcha");
+const thankYouRoute = require("./routes/thankyou");
+
+const slack = require("@slack/interactive-messages").createMessageAdapter(config.slack.signing_secret);
+const slackRequest = require("./routes/slack");
+
+slack.action(/slackrequest_\d+/, slackRequest.processPayload);
 
 var app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
-if (app.get('env') === 'development') {
-    app.locals.pretty = true;
-}
-
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(validator());
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(function (req, res, next) {
-    req.db = db;
-    next();
-});
-
-app.use('/', index);
-app.use('/signup', signup);
-app.use('/success', success);
-
-app.use('/admin', function (req, res, next) {
-    var user = auth(req);
-
-    if (!user || !config.admins[user.name] || config.admins[user.name].password !== user.pass) {
-        res.set('WWW-Authenticate', 'Basic realm="slack-invite"');
-        return res.status(401).send('Wrong username or password.');
+csp.extend(app, {
+    policy: {
+        useScriptNonce: true,
+        directives: {
+            "default-src": ["none"],
+            "object-src": ["none"],
+            "frame-src": ["self", "https://www.google.com/recaptcha/", "https://www.gstatic.com/recaptcha/"],
+            "frame-ancestors": ["self", "https://www.google.com/recaptcha/", "https://www.gstatic.com/recaptcha/"],
+            "img-src": ["self", "data:", "https://www.google.com/recaptcha/", "https://www.gstatic.com/recaptcha/"],
+            "script-src": [config.base_uri],
+            "style-src": ["self", "https://www.google.com/recaptcha/", "https://www.gstatic.com/recaptcha/"],
+            "form-src": ["self"],
+            "base-uri": ["none"],
+        },
+        reportPolicy: {
+            useScriptNonce: true,
+            directives: {
+                "default-src": ["none"],
+                "object-src": ["none"],
+                "frame-src": ["self", "https://www.google.com/recaptcha/", "https://www.gstatic.com/recaptcha/"],
+                "frame-ancestors": ["self", "https://www.google.com/recaptcha/", "https://www.gstatic.com/recaptcha/"],
+                "img-src": ["self", "data:", "https://www.google.com/recaptcha/", "https://www.gstatic.com/recaptcha/"],
+                "script-src": [config.base_uri],
+                "style-src": ["self", "https://www.google.com/recaptcha/", "https://www.gstatic.com/recaptcha/"],
+                "form-src": ["self"],
+                "base-uri": ["none"],
+            },
+        },
     }
-
-    return next();
-}, admin);
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
 });
 
-// error handlers
+app.locals.pretty = app.get("env") !== "production";
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "pug");
+app.use(logger("dev"));
 
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
+app.use(express.static(path.join(__dirname, "public")));
+
+app.use("/", indexRoute);
+app.use("/js", recaptchaRoute);
+app.use("/thankyou", thankYouRoute);
+
+app.use("/slack", slack.expressMiddleware());
+
+app.use(function (_req, _res, next) {
+    next(createError(404));
+});
+
+// eslint-disable-next-line no-unused-vars
+app.use(function (err, req, res, _next) {
+    debug(`Unhandled page: ${req.path}, error: ${JSON.stringify(err)}`);
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get("env") === "development" ? err : {};
+
+    // render the error page
     res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
-    });
-  });
-}
 
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
+    const viewModel = {
+        page: "error",
+        lang: "en",
+        name: config.name,
+        title: `${err.message} - ${config.name} Slack`,
+        description: config.description,
+        code_of_conduct_url: config.code_of_conduct_url,
+    };
+
+    res.render("error", viewModel);
 });
-
 
 module.exports = app;
