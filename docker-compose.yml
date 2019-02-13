@@ -1,0 +1,27 @@
+version: '3'
+services:
+  nginx:
+    container_name: slack-request-web
+    build: nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+  app:
+    container_name: slack-request-app
+    build: .
+    env_file: slack-request.env
+    restart: always
+    expose:
+      - "3000"
+  db:
+    container_name: slack-request-db
+    image: mongo:latest
+    volumes:
+      - "slack-request-db:/data/db"
+    restart: always
+    expose:
+      - "27017"
+
+volumes:
+    slack-request-db:

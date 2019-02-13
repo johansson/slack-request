@@ -1,0 +1,7 @@
+extends layout
+
+block content
+  div(class="callout alert-callout-border success")
+    h2 #[strong Thank you&excl;]
+    p Please check your e-mail in the next few days, you should receive an invitation e-mail. If you don&rsquo;t see it, please check your spam folder or do a search in your inbox for all e-mails from #[span(class="label radius") slack.com].
+    p Once you join the #[span= name] Slack, you may use this #[a(href= `https://${slack_url}`) link] to chat on Slack (be sure to bookmark it&excl;), or you can install the #[a(href="https://slack.com/downloads") Slack client].
