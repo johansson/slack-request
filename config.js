@@ -44,4 +44,9 @@ module.exports = {
             error: "You must agree to the Code of Conduct!",
         },
     },
+
+    whos_invited: {
+        title: "Who’s invited?",
+        body: "Anybody who is deaf or hard&nbsp;of&nbsp;hearing and a working professional or looking for employment. Friends and allies: we appreciate your support, but this space is for us.",
+    },
 };

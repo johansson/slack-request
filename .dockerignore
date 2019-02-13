@@ -1,2 +1,11 @@
+authors.yml
+CONTRIBUTORS.md
+docker-compose.yml
+Dockerfile
+nginx
 node_modules
 npm-debug.log
+LICENSE
+README.md
+scss
+slack-request.env

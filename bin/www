@@ -8,22 +8,12 @@ var app = require("../app");
 var debug = require("debug")("slack-request:server");
 
 var http = require("http");
-var https = require("https");
-var fs = require("fs");
-
-// eslint-disable-next-line no-unused-vars
-const _options = {
-    key: fs.readFileSync("/Users/will/.config/ssl/localhost.key"),
-    cert: fs.readFileSync("/Users/will/.config/ssl/localhost.cert"),
-    requestCert: false,
-    rejectUnauthorized: false,
-};
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = typeof (options) !== "undefined" ? "443" : normalizePort(process.env.PORT || "3000");
+var port = normalizePort(process.env.PORT || "3000");
 app.set("port", port);
 
 /**

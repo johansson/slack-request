@@ -26,10 +26,7 @@ const ViewModel = nonce => {
         description: config.description,
         description_metadata: config.description_metadata,
         code_of_conduct_url: config.code_of_conduct_url,
-        whos_invited: {
-            title: "Who’s invited?",
-            body: "Anybody who is deaf or hard&nbsp;of&nbsp;hearing and a working professional or looking for employment. Friends and allies: we appreciate your support, but this space is for us.",
-        },
+        whos_invited: config.whos_invited,
         default_channels: config.default_channels,
         non_optout_channel: config.default_channels.find(channel => !channel.opt_out),
         number_of_channels: number_to_string(config.default_channels.length),

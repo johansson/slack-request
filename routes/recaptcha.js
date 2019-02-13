@@ -6,7 +6,7 @@ router.get("/recaptcha.js", (req, res) => {
     res.setHeader("Content-Type", "application/javascript;charset=utf-8");
     res.write(`var loadRecaptcha = () => {
     grecaptcha.ready(() => {
-        grecaptcha.execute("${req.query.sitekey || config.recaptcha_v3.sitekey }", { action: "signup" } ).then(function(token) {
+        grecaptcha.execute("${ config.recaptcha_v3.sitekey }", { action: "signup" } ).then(function(token) {
             var recaptchaResponse = document.getElementById("recaptchaResponse");
             recaptchaResponse.value = token;
         });

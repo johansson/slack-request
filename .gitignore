@@ -68,3 +68,6 @@ typings/
 
 # Environment Variables
 *.env
+
+# Secrets
+certs/
